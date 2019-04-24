@@ -23,9 +23,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("/soda", (req, res) => {
-  res.send("I LOVE SODAS LIKE FAT AMERICAN CHILDREN!!!");
-})
 
 app.post("/createUser", userController.createUser, (req, res) => {
   res.send(res.locals.doc);
@@ -36,7 +33,11 @@ app.post("/login", userController.getUser, (req, res) => {
 });
 
 app.post("/createQuiz", quizController.createQuiz, (req, res) => {
-  res.send();
+  res.send("Created quiz: " + res.locals.docName);
+});
+
+app.get("/getQuiz", quizController.getQuiz, (req, res) => {
+  res.send(res.locals.quizzo);
 })
 
 
