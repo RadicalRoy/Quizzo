@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open & nodemon server/server.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/RadicalRoy/Quizzo#readme",
   "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.5.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
