@@ -28,6 +28,7 @@ userController.getUser = (req, res, next) => {
       return res.status(400).send("Something went wrong: " + err.toString());
     } else {
       res.cookie('quizzo-user', doc.username);
+      res.locals.doc = doc;
       return next();
     }
   });

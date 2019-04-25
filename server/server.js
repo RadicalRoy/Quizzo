@@ -29,7 +29,7 @@ app.post("/createUser", userController.createUser, (req, res) => {
 });
 
 app.post("/login", userController.getUser, (req, res) => {
-  res.send();
+  res.send(res.locals.doc);
 });
 
 app.post("/createQuiz", quizController.createQuiz, (req, res) => {
@@ -38,6 +38,18 @@ app.post("/createQuiz", quizController.createQuiz, (req, res) => {
 
 app.get("/getQuiz", quizController.getQuiz, (req, res) => {
   res.send(res.locals.quizzo);
+})
+
+// check if user has a cookie with a username
+app.get("/login", (req, res) => {
+  let loggedIn;
+  if(!req.headers.cookie) {
+    loggedIn = false;
+  } else {
+    console.log(req.headers.cookie);
+    loggedIn = true;
+  }
+  res.json({loggedIn});
 })
 
 
