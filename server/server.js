@@ -23,12 +23,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-
 app.post("/createUser", userController.createUser, (req, res) => {
-  res.send(res.locals.doc);
-});
-
-app.post("/login", userController.getUser, (req, res) => {
   res.send(res.locals.doc);
 });
 
@@ -40,16 +35,26 @@ app.get("/getQuiz", quizController.getQuiz, (req, res) => {
   res.send(res.locals.quizzo);
 })
 
+app.get("/getOwnerQuizzes", quizController.getOwnerQuizzes, (req, res) => {
+  res.send(res.locals.quizzos);
+})
+
+app.post("/login", userController.getUser, (req, res) => {
+  res.send(res.locals.doc);
+});
+
 // check if user has a cookie with a username
 app.get("/login", (req, res) => {
   let loggedIn;
+  let user = null;
   if(!req.headers.cookie) {
     loggedIn = false;
   } else {
     console.log(req.headers.cookie);
     loggedIn = true;
+    user = req.headers.cookie.toString().split("=")[1];
   }
-  res.json({loggedIn});
+  res.json({loggedIn, user});
 })
 
 

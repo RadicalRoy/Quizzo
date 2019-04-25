@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server --open & nodemon server/server.js"
+    "start": "nodemon server/server.js & webpack-dev-server --open"
   },
   "repository": {
     "type": "git",

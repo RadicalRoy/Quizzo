@@ -4,7 +4,6 @@ let React = require('react');
 
 
 class LoginPage extends React.Component {
-
   constructor (props) {
     super(props);
   }

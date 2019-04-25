@@ -5,6 +5,7 @@ require('./index.css');
 
 let MainPage = require('./components/MainPage');
 let LoginPage = require('./components/LoginPage');
+let QuizView = require('./components/QuizView');
 // state
 // lifecycle events
 // UI
@@ -12,13 +13,19 @@ let LoginPage = require('./components/LoginPage');
 class App extends React.Component {
   constructor () {
     super();
-    this.state = {url: 'http://localhost:8080',
+    this.state = {
+                  url: 'http://localhost:8080',
                   isLoggedIn: false,
                   user: null,
                   quizzes: [],
                   quizResults: [],
+                  quizViewIndex: null,
+                  quizViewShow: false
                  };
     this.loginUser = this.loginUser.bind(this);
+    this.setQuizzes = this.setQuizzes.bind(this);
+    this.showQuizView = this.showQuizView.bind(this);
+    this.disableQuizView = this.disableQuizView.bind(this);
   }
 
   //check logged in status
@@ -27,10 +34,24 @@ class App extends React.Component {
       method: 'GET'
     })
     .then(response => response.json())
-    .then(json => this.setState({...this.state, isLoggedIn : json.loggedIn}))
+    .then(json => this.setState({...this.state, isLoggedIn : json.loggedIn, user:json.user}))
     .catch(err => console.log("Error occurred in app"))
   }
 
+  // Set Quizzes from POST response
+  setQuizzes(quizzes) {
+    this.setState({...this.state, quizzes});
+  }
+
+  showQuizView (index) {
+    this.setState({...this.state, quizViewIndex:index, quizViewShow: true})
+  }
+
+  disableQuizView() {
+    this.setState({...this.state, quizViewIndex:null, quizViewShow: false})
+  }
+
+  // Login the User
   loginUser(event) {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
@@ -49,19 +70,29 @@ class App extends React.Component {
     })
     .catch(err => console.log("Error occurred in app: loginUser"))
   }
+
   // if logged in show app
   // if not logged in show login page
   render() {
     let component = null
     if (this.state.isLoggedIn) {
       // Main Page component
-      component = <MainPage user={this.state.user} quizzes={this.state.quizzes} quizResults={this.state.quizResults}/>
+      component = <MainPage
+                  url={this.state.url}
+                  user={this.state.user}
+                  quizzes={this.state.quizzes}
+                  quizResults={this.state.quizResults}
+                  setQuizzes={this.setQuizzes}
+                  showQuizView={this.showQuizView}
+                  disableQuizView={this.disableQuizView}
+                  />
     } else {
       // Login Page Component
       component = <LoginPage loginUser={this.loginUser}/>
     }
     return (
       <div id="app">
+        {this.state.quizViewShow && <QuizView disableQuizView={this.disableQuizView} quizViewIndex={this.state.quizViewIndex} quizzes={this.state.quizzes}/>}
         {component}
       </div>
     )

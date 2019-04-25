@@ -35,11 +35,19 @@ quizController.getQuiz = (req, res, next) => {
 
 }
 
-quizController.getQuizResult = (req, res, next) => {
 
-}
+quizController.getOwnerQuizzes = (req, res, next) => {
 
-quizController.getUserQuizzes = (req, res, next) => {
+  if(!req.headers.ownername) return res.status(400).send("Bad form inputs");
+
+  Quizzo.find({owner : req.headers.ownername}, (err, docs) => {
+    if(err) {
+      return res.status(400).send("Something went wrong: " + err.toString());
+    } else {
+      res.locals.quizzos = docs;
+      return next();
+    }
+  })
 
 }
 
