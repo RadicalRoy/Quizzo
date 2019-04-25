@@ -31,6 +31,7 @@ class MainPage extends React.Component {
         quizzes={this.props.quizzes}
         showQuizView={this.props.showQuizView}
         />
+        <button id="addQuiz" onClick={this.props.toggleCreateQuizView}> Create Quizzo </button>
       </div>
     )
   }

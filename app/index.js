@@ -6,6 +6,7 @@ require('./index.css');
 let MainPage = require('./components/MainPage');
 let LoginPage = require('./components/LoginPage');
 let QuizView = require('./components/QuizView');
+let CreateQuizView = require('./components/CreateQuizView')
 // state
 // lifecycle events
 // UI
@@ -20,12 +21,14 @@ class App extends React.Component {
                   quizzes: [],
                   quizResults: [],
                   quizViewIndex: null,
-                  quizViewShow: false
+                  quizViewShow: false,
+                  createQuizShow: false,
                  };
     this.loginUser = this.loginUser.bind(this);
     this.setQuizzes = this.setQuizzes.bind(this);
     this.showQuizView = this.showQuizView.bind(this);
     this.disableQuizView = this.disableQuizView.bind(this);
+    this.toggleCreateQuizView = this.toggleCreateQuizView.bind(this);
   }
 
   //check logged in status
@@ -36,6 +39,10 @@ class App extends React.Component {
     .then(response => response.json())
     .then(json => this.setState({...this.state, isLoggedIn : json.loggedIn, user:json.user}))
     .catch(err => console.log("Error occurred in app"))
+  }
+
+  toggleCreateQuizView () {
+    this.setState({...this.state, createQuizShow: !this.state.createQuizShow})
   }
 
   // Set Quizzes from POST response
@@ -85,6 +92,7 @@ class App extends React.Component {
                   setQuizzes={this.setQuizzes}
                   showQuizView={this.showQuizView}
                   disableQuizView={this.disableQuizView}
+                  toggleCreateQuizView={this.toggleCreateQuizView}
                   />
     } else {
       // Login Page Component
@@ -93,7 +101,10 @@ class App extends React.Component {
     return (
       <div id="app">
         {this.state.quizViewShow && <QuizView disableQuizView={this.disableQuizView} quizViewIndex={this.state.quizViewIndex} quizzes={this.state.quizzes}/>}
+        
+        {this.state.createQuizShow && <CreateQuizView toggleCreateQuizView={this.toggleCreateQuizView}/>}
         {component}
+
       </div>
     )
   }
